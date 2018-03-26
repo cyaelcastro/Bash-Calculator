@@ -20,15 +20,10 @@ segundoOperando=$(whiptail --title "Calculator" --inputbox "Please type the seco
 
 if [[ ${operacion} == '/' ]]; then
 
-	[[ $segundoOperando =~ ^[1-9.-]+$ ]]
-else
-
-	[[ $segundoOperando =~ ^[0-9.-]+$ ]]
-fi
-
-if [ 1 -eq $? ]; then
-	whiptail --title "Calculator" --msgbox "Check your input" 10 60
+	if [ $segundoOperando -eq '0' ]; then
+	whiptail --title "Calculator" --msgbox "Ops, a zero value " 10  59
 	exit
+	fi
 fi
 
 final=$(bc <<< "${primerOperando}${operacion}${segundoOperando}")
