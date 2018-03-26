@@ -1,10 +1,9 @@
+
 #!/bin/bash
 whiptail --title "Calculator" --msgbox "Hi, i'm a calculator, choose OK to continue" 10 60
 primerOperando=$(whiptail --title "Calculator" --inputbox "Please  the first operator" 10 60 3>&1 1>&2 2>&3)
 
-[[ $primerOperando =~ ^[0-9.-]+$ ]]
-
-if [ 1 -eq $? ]; then
+if ! [[ $primerOperando =~ ^[0-9.-]+$ ]]; then
 	whiptail --title "Calculator" --msgbox "Check your input" 10 60
 	exit
 fi
@@ -18,12 +17,17 @@ operacion=$(whiptail --title "Calculator" --radiolist \
 
 segundoOperando=$(whiptail --title "Calculator" --inputbox "Please type the second operator" 10 60 3>&1 1>&2 2>&3)
 
-if [[ ${operacion} == '/' ]]; then
+if  [[ $segundoOperando =~ ^[0-9.-]+$ ]]; then
 
-	if [ $segundoOperando -eq '0' ]; then
-	whiptail --title "Calculator" --msgbox "Ops, a zero value " 10  59
-	exit
+	if [[  ${operacion} == '/'  &&    ${segundoOperando} -eq '0' ]]; then
+			whiptail --title "Calculator" --msgbox "Oops, a zero value " 10  59
+			exit
 	fi
+
+
+else
+	whiptail --title "Calculator" --msgbox "Check your input" 10 59
+	exit
 fi
 
 final=$(bc <<< "${primerOperando}${operacion}${segundoOperando}")
